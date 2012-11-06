@@ -33,7 +33,17 @@ class arno(
 			owner  => root,
 			group  => root,
 			mode   => 600,
-			source => 'puppet:///arno/arno.patch'
+			source => 'puppet:///arno/arno.patch',
+			notify => Exec['apply_arno_patch'],
+			require => Package['arno-iptables-firewall']
+		}
+
+		exec { 'apply_arno_patch' :
+			command     => "patch /usr/sbin/arno-iptables-firewall $patch_file",
+			path        => '/usr/bin:/bin',
+			unless      => 'grep -q "# Add support to access public nat from internal network" /usr/sbin/arno-iptables-firewall',
+			refreshonly => true,
+			require     => File[$patch_file]
 		}
 
 	}
