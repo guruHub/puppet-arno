@@ -11,7 +11,8 @@ class arno(
 	$patch_public_nat_from_inside = false,
 	$dynamic_ip = 'false'
 ) {
-	
+	include concat::setup
+		
 	# Setup later as args and move to defaults.pp
 	$preseed_file = '/root/.puppet-arno.preseed'
 	$patch_file   = '/root/.puppet-arno.patch'
@@ -29,6 +30,26 @@ class arno(
 		ensure => present,
 		responsefile => $preseed_file,
 		require      => File[ $preseed_file ]
+	}
+
+	# Change firewall.conf to read nat from outside files
+	file { '/etc/arno-iptables-firewall/firewall.conf' :
+		ensure => present,
+		owner  => root,
+		group  => root,
+		mode   => 600,
+		source => 'puppet:///arno/firewall.conf',
+		require => Package['arno-iptables-firewall']
+	}
+
+	# Define basic concat for tcp forward, udp forward and custom rules
+	concat { [ '/etc/arno-iptables-firewall/nat-forward-tcp.conf', 
+		   '/etc/arno-iptables-firewall/nat-forward-udp.conf', 
+		   '/etc/arno-iptables-firewall/custom-rules.conf' ] :
+		owner => root,
+		group => root,
+		mode  => 600,
+		content => '# This file is managed by puppet, all changes will be lost on next puppet run'		
 	}
 
 	if $patch_public_nat_from_inside {
@@ -50,4 +71,5 @@ class arno(
 		}
 
 	}
+
 }
