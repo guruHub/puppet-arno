@@ -11,7 +11,7 @@ define arno::openport(
 ) {
 
 	if $int_port == '' {
-		$real_int_port = $ext_port,
+		$real_int_port = $ext_port
 	} else {
 		$real_int_port = $int_port
 	}
