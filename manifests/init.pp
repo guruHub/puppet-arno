@@ -3,10 +3,13 @@
 #
 class arno(
 	$ext_if,
-	$int_net,
 	$services_tcp = '22',
 	$int_if,
-	$patch_public_nat_from_inside = false
+	$int_net,
+	$nat,
+	$int_nat_net,
+	$patch_public_nat_from_inside = false,
+	$dynamic_ip = 'false'
 ) {
 	
 	# Setup later as args and move to defaults.pp
