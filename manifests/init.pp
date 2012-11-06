@@ -17,7 +17,7 @@ class arno(
 		owner  => root,
 		group  => root,
 		mode   => 600,
-		content => template('arno/arno.preseed')
+		content => template('arno/arno.preseed.erb')
 	}
 
 	package{ 'arno-iptables-firewall' :
