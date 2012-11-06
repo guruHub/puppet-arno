@@ -53,15 +53,15 @@ class arno(
 	}
 	concat::fragment { 'concat-forward-tcp-header' :
 		target => '/etc/arno-iptables-firewall/nat-forward-tcp.conf', 
-		content => '# This file is managed by puppet, all changes will be lost on next puppet run'
+		content => "# This file is managed by puppet, all changes will be lost on next puppet run\n"
 	}
 	concat::fragment { 'concat-forward-udp-header' :
 		target => '/etc/arno-iptables-firewall/nat-forward-udp.conf', 
-		content => '# This file is managed by puppet, all changes will be lost on next puppet run'
+		content => "# This file is managed by puppet, all changes will be lost on next puppet run\n"
 	}
 	concat::fragment { 'concat-custom-rules-header' :
-		target => '/etc/arno-iptables-firewall/custom-rules.conf', 
-		content => '# This file is managed by puppet, all changes will be lost on next puppet run'
+		target => '/etc/arno-iptables-firewall/custom-rules', 
+		content => "# This file is managed by puppet, all changes will be lost on next puppet run\n"
 	}
 
 	if $patch_public_nat_from_inside {
