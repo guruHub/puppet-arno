@@ -49,7 +49,8 @@ class arno(
 		owner => root,
 		group => root,
 		mode  => 600,
-		content => '# This file is managed by puppet, all changes will be lost on next puppet run'		
+		content => '# This file is managed by puppet, all changes will be lost on next puppet run',
+		require => Package['arno-iptables-firewall']
 	}
 
 	if $patch_public_nat_from_inside {
