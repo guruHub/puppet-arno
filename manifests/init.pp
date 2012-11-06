@@ -51,10 +51,16 @@ class arno(
 		mode  => 600,
 		require => Package['arno-iptables-firewall']
 	}
-	concat::fragment { 'concat-header' :
-		target => [ '/etc/arno-iptables-firewall/nat-forward-tcp.conf', 
-			    '/etc/arno-iptables-firewall/nat-forward-udp.conf', 
-	 		    '/etc/arno-iptables-firewall/custom-rules.conf' ],	
+	concat::fragment { 'concat-forward-tcp-header' :
+		target => '/etc/arno-iptables-firewall/nat-forward-tcp.conf', 
+		content => '# This file is managed by puppet, all changes will be lost on next puppet run'
+	}
+	concat::fragment { 'concat-forward-udp-header' :
+		target => '/etc/arno-iptables-firewall/nat-forward-udp.conf', 
+		content => '# This file is managed by puppet, all changes will be lost on next puppet run'
+	}
+	concat::fragment { 'concat-custom-rules-header' :
+		target => '/etc/arno-iptables-firewall/custom-rules.conf', 
 		content => '# This file is managed by puppet, all changes will be lost on next puppet run'
 	}
 
