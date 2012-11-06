@@ -88,10 +88,11 @@ class arno(
 
 	}
 
-	service { "nginx":
-		ensure     => present,
+	service { "arno-iptables-firewall":
+		ensure     => running,
 		enable     => true,
 		hasrestart => true,
+		hasstatus  => true
 	}
 
 
