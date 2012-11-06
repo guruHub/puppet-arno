@@ -45,7 +45,7 @@ class arno(
 	# Define basic concat for tcp forward, udp forward and custom rules
 	concat { [ '/etc/arno-iptables-firewall/nat-forward-tcp.conf', 
 		   '/etc/arno-iptables-firewall/nat-forward-udp.conf', 
-		   '/etc/arno-iptables-firewall/custom-rules.conf' ] :
+		   '/etc/arno-iptables-firewall/custom-rules' ] :
 		owner => root,
 		group => root,
 		mode  => 600,
