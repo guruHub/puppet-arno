@@ -1,0 +1,18 @@
+--- /usr/sbin/arno-iptables-firewall-1.9.2.k-4	2012-08-10 11:30:19.000000000 -0300
++++ /usr/sbin/arno-iptables-firewall	2012-08-14 16:48:06.000000000 -0300
+@@ -4797,6 +4797,15 @@
+             if [ -n "$dhost" ]; then
+               iptables -A FORWARD -i $eif ! -o $eif -s $shost -d $dhost -p tcp --dport $dport -j ACCEPT
+             fi
++            # Add support to access public nat from internal network
++            # Warning: if nat it's restricted to a given source, it will respect that and won't work.
++            # In those cases you will need to add one rule allowing as source your internal network
++            for iif in $INT_IF; do
++               iptables -t nat -A PREROUTING -i $iif -s $dhost -d $destip -p tcp --dport $sport -j DNAT --to-destination `echo "$dhost_dport" |tr "$SEP-" '::'`
++               if [ -n "$dhost" ]; then
++                 iptables -t nat -A POSTROUTING -o $iif -s $dhost -d $dhost -p tcp --dport $dport -j SNAT --to $destip
++               fi
++            done            
+           done
+         done
+       done
