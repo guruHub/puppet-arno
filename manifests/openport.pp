@@ -17,11 +17,12 @@ define arno::openport(
 	}
 
 	concat::fragment{"arno_openport_${name}":
-		target => $proto ? {
+		target  => $proto ? {
 			'tcp' => '/etc/arno-iptables-firewall/nat-forward-tcp.conf',
 			'udp' => '/etc/arno-iptables-firewall/nat-forward-udp.conf'
 		},
-		content => "${ext_ip}#${source}~${ext_port}>${int_ip}~${real_int_port}\n"
+		content => "${ext_ip}#${source}~${ext_port}>${int_ip}~${real_int_port}\n",
+		order   => 50
 	}
 
 }

@@ -49,19 +49,23 @@ class arno(
 		owner => root,
 		group => root,
 		mode  => 600,
-		require => Package['arno-iptables-firewall']
+		require => Package['arno-iptables-firewall'],
+		notify  => Service['arno-iptables-firewall']
 	}
 	concat::fragment { 'concat-forward-tcp-header' :
-		target => '/etc/arno-iptables-firewall/nat-forward-tcp.conf', 
-		content => "# This file is managed by puppet, all changes will be lost on next puppet run\n"
+		target  => '/etc/arno-iptables-firewall/nat-forward-tcp.conf', 
+		content => "# This file is managed by puppet, all changes will be lost on next puppet run\n",
+		order   => 01,
 	}
 	concat::fragment { 'concat-forward-udp-header' :
-		target => '/etc/arno-iptables-firewall/nat-forward-udp.conf', 
-		content => "# This file is managed by puppet, all changes will be lost on next puppet run\n"
+		target  => '/etc/arno-iptables-firewall/nat-forward-udp.conf', 
+		content => "# This file is managed by puppet, all changes will be lost on next puppet run\n",
+		order   => 01
 	}
 	concat::fragment { 'concat-custom-rules-header' :
-		target => '/etc/arno-iptables-firewall/custom-rules', 
-		content => "# This file is managed by puppet, all changes will be lost on next puppet run\n"
+		target  => '/etc/arno-iptables-firewall/custom-rules', 
+		content => "# This file is managed by puppet, all changes will be lost on next puppet run\n",
+		order   => 01
 	}
 
 	if $patch_public_nat_from_inside {
@@ -83,5 +87,12 @@ class arno(
 		}
 
 	}
+
+	service { "nginx":
+		ensure     => present,
+		enable     => true,
+		hasrestart => true,
+	}
+
 
 }
